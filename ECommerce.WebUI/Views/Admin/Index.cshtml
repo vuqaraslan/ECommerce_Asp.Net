@@ -1,0 +1,60 @@
+﻿<h1>Admin Module</h1>
+
+@model ProductListViewModel
+@{
+    var sortByPrice = "";
+}
+
+@if (Model.Products == null || Model.Products.Count == 0)
+{
+    <span class="alert alert-danger" role="alert">No Product Exist</span>
+}
+else
+{
+    <section class="container w-100">
+        <filtering-data controllerName="admin"
+                        current-category="@Model.CurrentCategory"
+                        current-page="@Model.CurrentPage"
+                        orderByPrices="Higher To Lower">
+        </filtering-data>
+    </section>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Unit Price</th>
+                <th>UnitsInStock</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model.Products)
+            {
+                <tr>
+                    <td>
+                        @product.ProductName
+                    </td>
+                    <td>
+                        @product.UnitPrice
+                    </td>
+                    <td>
+                        @product.UnitsInStock
+                    </td>
+                    <td>
+                        <a href="/Admin/RemoveProduct?productId=@product.ProductId"
+                           class="btn btn-xs btn-success">Delete Product</a>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <product-list-pager controllerName="admin"
+                        current-category="@Model.CurrentCategory"
+                        current-page="@Model.CurrentPage"
+                        page-count="@Model.PageCount"
+                        page-size="@Model.PageSize">
+    </product-list-pager>
+
+}

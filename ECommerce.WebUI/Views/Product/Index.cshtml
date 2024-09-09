@@ -1,0 +1,57 @@
+﻿@model ProductListViewModel
+@{
+    string sortByPriceAscending = "Lower To Higher";
+    string sortByPriceDescending = "Higher To Lower";
+    var sortArrParams = new string[] { sortByPriceAscending, sortByPriceDescending };
+}
+@if (Model.Products == null || Model.Products.Count == 0)
+{
+    <span class="alert alert-danger" role="alert">No Product Exist</span>
+}
+
+<section class="container w-100">
+    <filtering-data controllerName="product"
+                    current-category="@Model.CurrentCategory"
+                    current-page="@Model.CurrentPage"
+                    orderByPrices="@sortArrParams[1]">
+    </filtering-data>
+</section>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Unit Price</th>
+            <th>UnitsInStock</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>
+                    @product.ProductName
+                </td>
+                <td>
+                    @product.UnitPrice
+                </td>
+                <td>
+                    @product.UnitsInStock
+                </td>
+                <td>
+                    <a href="/Cart/AddToCart?productId=@product.ProductId&page=@Model.CurrentPage&category=@Model.CurrentCategory"
+                       class="btn btn-xs btn-success">Add To Cart</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<product-list-pager controllerName="product"
+                    current-category="@Model.CurrentCategory"
+                    current-page="@Model.CurrentPage"
+                    page-count="@Model.PageCount"
+                    page-size="@Model.PageSize">
+</product-list-pager>
